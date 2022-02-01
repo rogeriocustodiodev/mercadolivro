@@ -5,15 +5,20 @@ import com.mercadolivro.controller.request.PostCustomerRequest
 import com.mercadolivro.controller.request.PutBookRequest
 import com.mercadolivro.controller.request.PutCustomerRequest
 import com.mercadolivro.enums.BookStatus
+import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.model.CustomerModel
 
 fun PostCustomerRequest.toCustomerModel(): CustomerModel { // métodos injetados nas classes, como se fossem estáticos
-    return CustomerModel(name = this.name, email = this.email)
+    return CustomerModel(name = this.name, email = this.email, status = CustomerStatus.ATIVO)
 }
 
-fun PutCustomerRequest.toCustomerModel(id: Int): CustomerModel {
-    return CustomerModel(id = id,  name = this.name, email = this.email)
+fun PutCustomerRequest.toCustomerModel(previousCustomer: CustomerModel): CustomerModel {
+    return CustomerModel(
+        id = previousCustomer.id,
+        name = this.name,
+        email = this.email
+    )
 }
 
 fun PostBookRequest.toBookModel(customer: CustomerModel): BookModel {
