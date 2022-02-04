@@ -3,11 +3,15 @@ package com.mercadolivro.repository
 import com.mercadolivro.enums.BookStatus
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.model.CustomerModel
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface BookRepository : CrudRepository<BookModel, Int> {
+// Alterando de CrudRepository para JpaRepository, o Spring já implementa a paginação
+interface BookRepository : JpaRepository<BookModel, Int> {
 
-    fun findByStatus(status: BookStatus): List<BookModel>
+    fun findByStatus(status: BookStatus, pageable: Pageable): Page<BookModel>
     fun findByCustomer(customer: CustomerModel): List<BookModel>
 
+    //fun findAll(pageable: Pageable): Page<BookModel>
 }

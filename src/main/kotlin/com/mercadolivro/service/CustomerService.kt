@@ -3,6 +3,8 @@ package com.mercadolivro.service
 import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.CustomerRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,11 +13,11 @@ class CustomerService(
     val bookService: BookService
 ) {
 
-    fun getAll(name: String?): List<CustomerModel> { // o ? indica que o parâmetro não é obrigatório
+    fun getAll(name: String?, pageable: Pageable): Page<CustomerModel> { // o ? indica que o parâmetro não é obrigatório
         name?.let { // rodar esse código somente se a condição for satisfeita, no caso, se o nome estiver preenchido
-            return customerRepository.findByNameContaining(it)
+            return customerRepository.findByNameContaining(it, pageable)
         }
-        return customerRepository.findAll().toList()
+        return customerRepository.findAll(pageable)
     }
 
     fun create(customer: CustomerModel) {
