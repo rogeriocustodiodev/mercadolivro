@@ -30,12 +30,19 @@ class BookController(
 
     @GetMapping
     fun findAll(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
-        return bookService.findAll(pageable).map{ it.toResponse() }
+        return bookService.findAll(pageable).map { it.toResponse() }
     }
 
     @GetMapping("/actives")
     fun findActives(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> =
-        bookService.findActives(pageable).map{ it.toResponse() }
+        bookService.findActives(pageable).map { it.toResponse() }
+
+    @GetMapping("/sold")
+    fun findSold(
+        @PageableDefault(page = 0, size = 10) pageable: Pageable,
+        @RequestParam("customer_id") customerId: Int?): Page<BookResponse> {
+        return bookService.findSold(customerId, pageable).map { it.toResponse() }
+    }
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): BookResponse {

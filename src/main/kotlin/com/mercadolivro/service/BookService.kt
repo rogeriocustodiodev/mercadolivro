@@ -82,4 +82,11 @@ class BookService(
         return true
     }
 
+    fun findSold(customerId: Int?, pageable: Pageable): Page<BookModel> {
+        customerId?.let {
+            return bookRepository.findByStatusAndCustomerId(BookStatus.VENDIDO, customerId, pageable)
+        }
+        return bookRepository.findByStatus(BookStatus.VENDIDO, pageable)
+    }
+
 }
