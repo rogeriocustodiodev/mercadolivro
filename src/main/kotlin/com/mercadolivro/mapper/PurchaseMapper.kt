@@ -1,6 +1,7 @@
 package com.mercadolivro.mapper
 
 import com.mercadolivro.controller.request.PostPurchaseRequest
+import com.mercadolivro.controller.response.PurchaseResponse
 import com.mercadolivro.model.PurchaseModel
 import com.mercadolivro.service.BookService
 import com.mercadolivro.service.CustomerService
@@ -20,6 +21,17 @@ class PurchaseMapper(
             customer = customer,
             books = books,
             price = books.sumOf { it.price }
+        )
+    }
+
+    fun toResponse(purchaseModel: PurchaseModel?): PurchaseResponse {
+        return PurchaseResponse(
+            id = purchaseModel!!.id,
+            customer = purchaseModel!!.customer,
+            books = purchaseModel!!.books,
+            nfe = purchaseModel!!.nfe,
+            price = purchaseModel!!.price,
+            createdAt = purchaseModel!!.createdAt
         )
     }
 
