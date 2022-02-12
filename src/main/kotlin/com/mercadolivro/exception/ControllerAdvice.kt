@@ -43,7 +43,13 @@ class ControllerAdvice {
             HttpStatus.UNPROCESSABLE_ENTITY.value(),
             Errors.ML001.message,
             Errors.ML001.code,
-            ex.bindingResult.fieldErrors.map { FieldErrorResponse(it.defaultMessage ?: "invalid", it.field) }
+            ex.bindingResult.fieldErrors.map {
+                FieldErrorResponse(
+                    it.defaultMessage ?: "invalid",
+                    it.field,
+                    it.rejectedValue
+                )
+            }
         )
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errorResponse)

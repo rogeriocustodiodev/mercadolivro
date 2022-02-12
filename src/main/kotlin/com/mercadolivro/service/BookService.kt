@@ -70,4 +70,16 @@ class BookService(
         bookRepository.saveAll(books)
     }
 
+    fun isBooksAvailableForSale(ids: Set<Int>): Boolean {
+        val books = findAllByIds(ids)
+
+        books.forEach{
+            if (it.status!! != BookStatus.ATIVO) {
+                return false
+            }
+        }
+
+        return true
+    }
+
 }

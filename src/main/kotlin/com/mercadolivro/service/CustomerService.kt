@@ -53,4 +53,12 @@ class CustomerService(
     fun emailAvailable(email: String): Boolean {
         return !customerRepository.existsByEmail(email)
     }
+
+    fun isCustomerActive(id: Int): Boolean {
+        val customerModel = findById(id)
+        if (customerModel.status == CustomerStatus.INATIVO) {
+            return false
+        }
+        return true
+    }
 }
