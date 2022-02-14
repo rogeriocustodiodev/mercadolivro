@@ -16,7 +16,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("customers")
 class CustomerController(
-    val customerService: CustomerService // como se fosse o autowired para o java
+    private val customerService: CustomerService // como se fosse o autowired para o java
 ) {
 
     @GetMapping

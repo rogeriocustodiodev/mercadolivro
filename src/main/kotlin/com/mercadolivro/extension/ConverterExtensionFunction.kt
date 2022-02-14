@@ -12,14 +12,20 @@ import com.mercadolivro.model.BookModel
 import com.mercadolivro.model.CustomerModel
 
 fun PostCustomerRequest.toCustomerModel(): CustomerModel { // métodos injetados nas classes, como se fossem estáticos
-    return CustomerModel(name = this.name, email = this.email, status = CustomerStatus.ATIVO)
+    return CustomerModel(
+        name = this.name,
+        email = this.email,
+        status = CustomerStatus.ATIVO,
+        password = this.password
+    )
 }
 
 fun PutCustomerRequest.toCustomerModel(previousCustomer: CustomerModel): CustomerModel {
     return CustomerModel(
         id = previousCustomer.id,
         name = this.name,
-        email = this.email
+        email = this.email,
+        password = previousCustomer.password
     )
 }
 
