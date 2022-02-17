@@ -5,6 +5,7 @@ import com.mercadolivro.controller.response.CustomerResponse
 import com.mercadolivro.controller.response.PurchaseResponse
 import com.mercadolivro.extension.toResponse
 import com.mercadolivro.mapper.PurchaseMapper
+import com.mercadolivro.security.UserCanOnlyAccessTheirOwnResource
 import com.mercadolivro.service.PurchaseService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -27,6 +28,7 @@ public class PurchaseController(
     }
 
     @GetMapping
+    @UserCanOnlyAccessTheirOwnResource
     fun getAll(@PageableDefault(page = 0, size = 10) pageable: Pageable,
                @RequestParam("customer_id") customerId: Int?): Page<PurchaseResponse> { // o ? indica que o parâmetro não é obrigatório
         return purchaseService.getAll(customerId, pageable)
