@@ -2,9 +2,8 @@ package com.mercadolivro.service
 
 import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.enums.Errors
-import com.mercadolivro.enums.Role
 import com.mercadolivro.exception.NotFoundException
-import com.mercadolivro.model.CustomerModel
+import com.mercadolivro.helper.buildCustomer
 import com.mercadolivro.repository.CustomerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -22,7 +21,6 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
-import kotlin.random.Random.Default.nextInt
 
 @ExtendWith(MockKExtension::class)
 class CustomerServiceTest {
@@ -252,20 +250,5 @@ class CustomerServiceTest {
         assertFalse(isCustomerActive)
         verify(exactly = 1) { customerService.isCustomerActive(id) }
     }
-
-    private fun buildCustomer(
-       id: Int? = null,
-       name: String = "customer name",
-       email: String = "${UUID.randomUUID()}@email.com",
-       status: CustomerStatus = CustomerStatus.ATIVO,
-       password: String = "password"
-    ) = CustomerModel(
-        id = id,
-        name = name,
-        email = email,
-        status = status,
-        password = password,
-        roles = setOf(Role.CUSTOMER)
-    )
 
 }
