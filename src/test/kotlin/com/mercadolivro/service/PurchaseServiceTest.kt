@@ -2,7 +2,6 @@ package com.mercadolivro.service
 
 import com.mercadolivro.events.PurchaseEvent
 import com.mercadolivro.helper.buildPurchase
-import com.mercadolivro.model.PurchaseModel
 import com.mercadolivro.repository.PurchaseRepository
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -12,6 +11,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 
 @ExtendWith(MockKExtension::class)
 class PurchaseServiceTest {
@@ -55,4 +56,36 @@ class PurchaseServiceTest {
         // Assert
         verify(exactly = 1) { purchaseRepository.save(purchase) }
     }
+
+    @Test
+    fun `should return all purchases by customer`() {
+        // Arrange
+        val customerId = Math.random().toInt()
+        val purchasesExpected = PageImpl(listOf(buildPurchase(), buildPurchase()))
+        every { purchaseRepository.findByCustomerId(customerId, any()) } returns purchasesExpected
+
+        // Act
+        val purchasesReturned = purchaseService.getAll(customerId, Pageable.ofSize(1))
+
+        // Assert
+        assertEquals(purchasesExpected, purchasesReturned)
+        verify(exactly = 1) { purchaseRepository.findByCustomerId(customerId, any()) }
+        verify(exactly = 0) { purchaseRepository.findAll(Pageable.ofSize(1)) }
+    }
+
+    @Test
+    fun `should return all purchases`() {
+        // Arrange
+        val purchasesExpected = PageImpl(listOf(buildPurchase(), buildPurchase()))
+        every { purchaseRepository.findAll(Pageable.ofSize(1)) } returns purchasesExpected
+
+        // Act
+        val purchasesReturned = purchaseService.getAll(null, Pageable.ofSize(1))
+
+        // Assert
+        assertEquals(purchasesExpected, purchasesReturned)
+        verify(exactly = 1) { purchaseRepository.findAll(Pageable.ofSize(1)) }
+        verify(exactly = 0) { purchaseRepository.findByCustomerId(any(), any()) }
+    }
+
 }

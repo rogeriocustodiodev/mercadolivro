@@ -40,14 +40,14 @@ class CustomerServiceTest {
 
     @Test
     fun `should return all customers`() {
-        // arrange
+        // Arrange
         val fakeCustomers = PageImpl(listOf(buildCustomer(), buildCustomer()))
         every { customerRepository.findAll(any()) } returns fakeCustomers
 
-        // act
+        // Act
         val customers = customerService.getAll(null, Pageable.ofSize(1))
 
-        // assert
+        // Assert
         assertEquals(fakeCustomers, customers)
         verify(exactly = 0) { customerRepository.findByNameContaining(any(), any())}
         verify(exactly = 1) { customerRepository.findAll(any()) }
@@ -55,15 +55,15 @@ class CustomerServiceTest {
 
     @Test
     fun `should return customers when name is informed`() {
-        // arrange
+        // Arrange
         val name = UUID.randomUUID().toString()
         val fakeCustomers = PageImpl(listOf(buildCustomer(), buildCustomer()))
         every { customerRepository.findByNameContaining(name, any()) } returns fakeCustomers
 
-        // act
+        // Act
         val customers = customerService.getAll(name, Pageable.ofSize(1))
 
-        // assert
+        // Assert
         assertEquals(fakeCustomers, customers)
         verify(exactly = 0) { customerRepository.findAll(any()) }
         verify(exactly = 1) { customerRepository.findByNameContaining(name, any())}
