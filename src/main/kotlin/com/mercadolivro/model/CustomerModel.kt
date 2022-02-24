@@ -17,7 +17,7 @@ data class CustomerModel (
     var email: String,
     @Column
     @Enumerated(EnumType.STRING)
-    var status: CustomerStatus? = null,
+    var status: CustomerStatus = CustomerStatus.ATIVO,
     @Column
     val password: String,
     @Column(name = "role")

@@ -15,7 +15,6 @@ class GenerateNfeListener(
     @Async
     @EventListener
     fun listen(purchaseEvent: PurchaseEvent) {
-        Thread.sleep(5000)
         println("Gerando NFE")
         val nfe = UUID.randomUUID().toString()
         val purchaseModel = purchaseEvent.purchaseModel.copy(nfe = nfe)
