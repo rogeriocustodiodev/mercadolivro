@@ -51,7 +51,7 @@ class CustomerController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @OnlyAdminCanAccess
+    @UserCanOnlyAccessTheirOwnResource
     fun deleteCustomer(@PathVariable id: Int) {
         customerService.delete(id)
     }
